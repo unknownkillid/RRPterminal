@@ -1,9 +1,17 @@
 const inputEl = document.getElementById('input');
 const outputEl = document.getElementById('output');
 
+let offset = window.pageYOffset;
+
+function scrollToBottom() {
+    window.scrollBy(0, document.body.scrollHeight);
+  }
+  
+
 inputEl.focus();
 inputEl.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
+        scrollToBottom();
         const command = inputEl.value;
         handleCommand(command);
         inputEl.value = '';
@@ -13,6 +21,7 @@ inputEl.addEventListener('keydown', (event) => {
 let currentRoom = 'start';
 let hackProgress = 0;
 let progressBar = "-------------------------- Completed -------------------------";
+let timeout = 3000;
 
 const rooms = {
     start: {
@@ -66,17 +75,44 @@ function handleCommand(command) {
             TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
             collisions:0 txqueuelen:100
             RX bytes:0 (0.0 b)  TX bytes:0 (0.0 b) <br> <br>` + progressBar
+            
            
 
             if (hackProgress === 1) {
                 hackProgress = 2;
+            } else if (hackProgress === 2) {
+                output = 'all ports hacked!'
             } else {
                 output = "you are not admin"
             }
             break;
 
         case 'ssh22 config.py':
-            output = "You can't go that way.";
+            output = `ssh.service - OpenBSD Secure Shell server
+            <br>Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: enabled)
+            <br>Active: active (running) since Thu 2020-05-14 15:08:23 CEST; 24h ago
+            <br>Main PID: 846 (sshd)
+            <br>Tasks: 1 (limit: 4681)
+            <br>CGroup: /system.slice/ssh.service
+                    <br>└─846 /usr/sbin/sshd -D
+         <br>
+         <br>Mai 14 15:08:22 inlane systemd[1]: Starting OpenBSD Secure Shell server...
+        <br> Mai 14 15:08:23 inlane sshd[846]: Server listening on 0.0.0.0 port 22.
+         <br>Mai 14 15:08:23 inlane sshd[846]: Server listening on :: port 22.
+         <br>Mai 14 15:08:23 inlane systemd[1]: Started OpenBSD Secure Shell server.
+        <br> Mai 14 15:08:30 inlane systemd[1]: Reloading OpenBSD Secure Shell server.
+         <br>Mai 14 15:08:31 inlane sshd[846]: Received SIGHUP; restarting.
+         <br>Mai 14 15:08:31 inlane sshd[846]: Server listening on 0.0.0.0 port 22.
+         <br>Mai 14 15:08:31 inlane sshd[846]: Server listening on :: port 22.`;
+
+
+            if (hackProgress === 2) {
+                hackProgress = 3
+            } else if (hackProgress === 3) {
+                output = 'ssh protocol succesfully down!'
+            } else {
+                output = "ssh protocol not found!"
+            }
             break;
 
         case 'go west':
