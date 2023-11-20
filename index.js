@@ -1,34 +1,44 @@
 const inputEl = document.getElementById('input');
 const outputEl = document.getElementById('output');
+const terminal = document.getElementById('terminal');
+const xBtn = document.getElementById('xBtn')
 
-let offset = window.pageYOffset;
+xBtn.addEventListener('click', () => {
+    terminal.style.display = 'none'
+    admin = false;
+    porthack = false;
+    ssh = false;
+    chmod = false;
+})
 
-function scrollToBottom() {
-    window.scrollBy(0, document.body.scrollHeight);
-  }
-  
+let offset = terminal.pageYOffset;
 
 inputEl.focus();
 inputEl.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
-        scrollToBottom();
+        setTimeout(() => {
+            terminal.scrollBy(0, 500000)
+        }, 50);
         const command = inputEl.value;
         handleCommand(command);
         inputEl.value = '';
     }
 });
 
+let completed = false;
 let currentRoom = 'start';
-let hackProgress = 0;
+let admin = false;
+let porthack = false;
+let ssh = false;
+let chmod = false;
 let progressBar = "-------------------------- Completed -------------------------";
-let timeout = 3000;
 
 const rooms = {
     start: {
         description: `commands: <br>"help" <br><br>"sudo su - სისტემის ადმინისტრატორი"
         <br> "porthack -w file/wordlist.txt - პორტების დაჰაკვა"
         <br> "ssh22 config.py ssh პროტოკილოს მოხსნა"
-        <br> "schmod 777 deleteLog.py ლოგების წაშლა"`,
+        <br> "chmod 777 deletelog.py ლოგების წაშლა"`,
         exits: { north: 'help' },
     },
 };
@@ -43,8 +53,7 @@ function handleCommand(command) {
 
         case 'sudo su':
             output = `Now you are root let's start what you wanna do.`;
-
-            hackProgress = 1;
+            admin = true;
             break;
 
         case 'porthack -w file/wordlist.txt':
@@ -75,12 +84,11 @@ function handleCommand(command) {
             TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
             collisions:0 txqueuelen:100
             RX bytes:0 (0.0 b)  TX bytes:0 (0.0 b) <br> <br>` + progressBar
-            
-           
 
-            if (hackProgress === 1) {
-                hackProgress = 2;
-            } else if (hackProgress === 2) {
+
+            if (admin) {
+                porthack = true
+            } else if (porthack) {
                 output = 'all ports hacked!'
             } else {
                 output = "you are not admin"
@@ -106,22 +114,67 @@ function handleCommand(command) {
          <br>Mai 14 15:08:31 inlane sshd[846]: Server listening on :: port 22.`;
 
 
-            if (hackProgress === 2) {
-                hackProgress = 3
-            } else if (hackProgress === 3) {
+            if (porthack) {
+                ssh = true
+            } else if (ssh) {
                 output = 'ssh protocol succesfully down!'
             } else {
                 output = "ssh protocol not found!"
             }
             break;
 
-        case 'go west':
-            if (rooms[currentRoom].exits.west) {
-                currentRoom = rooms[currentRoom].exits.west;
-                output = rooms[currentRoom].description;
+        case 'chmod 777 deletelog.py':
+
+            output = `<br>Sep 11 09:46:33 sys1 crontab[20601]: (root) BEGIN EDIT (root)
+                <br>Sep 11 09:46:39 sys1 crontab[20601]: (root) REPLACE (root)
+                <br>Sep 11 09:46:39 sys1 crontab[20601]: (root) END EDIT (root)
+                <br>Dec 19 07:35:21 localhost exiting on signal 15
+                <br>Dec 19 16:49:31 localhost syslogd 1.4.1#17ubuntu3: restart
+                <br>Jun  1 22:20:05 secserv kernel: Kernel logging (proc) stopped.
+                <br>Jun  1 22:20:05 secserv kernel: Kernel log daemon terminating.
+                <br>Jun  1 22:20:06 secserv exiting on signal 15
+                <br>Nov 27 08:05:57 galileo kernel: Kernel logging (proc) stopped.
+                <br>Nov 27 08:05:57 galileo kernel: Kernel log daemon terminating.
+                <br>Nov 27 08:05:57 galileo exiting on signal 15
+                <br>May 05 08:57:27 ubuntu-bionic sshd[5544]: pam_unix(sshd:session): session opened for user vagrant by (uid=0)
+                <br>[Tue May 5 08:41:31 2020] EXT4-fs (sda1): mounted filesystem with ordered data mode. Opts: (null)
+                <br>template(name="LogseneFormat" type="list" option.json="on") {
+                    <br>constant(value="{")
+                    <br>constant(value="\"@timestamp\":\"")
+                    <br>property(name="timereported" dateFormat="rfc3339")
+                    <br>constant(value="\",\"message\":\"")
+                    <br>property(name="msg")
+                    <br>constant(value="\",\"host\":\"")
+                    <br>property(name="hostname")
+                    <br>constant(value="\",\"severity\":\"")
+                    <br>property(name="syslogseverity-text")
+                    <br>constant(value="\",\"facility\":\"")
+                    <br>property(name="syslogfacility-text")
+                    <br>constant(value="\",\"syslog-tag\":\"")
+                    <br>property(name="syslogtag")
+                    <br>constant(value="\",\"source\":\"")
+                    <br>property(name="programname")
+                    <br>constant(value="\"}")
+                   <br>}
+                   <br>module(load="omelasticsearch")
+                   <br>action(type="omelasticsearch"
+                    <br>template="LogseneFormat" # the template that you defined earlier
+                    <br>searchIndex="LOGSENE_APP_TOKEN_GOES_HERE"
+                    <br>server="logsene-receiver.sematext.com"
+                    <br>serverport="443"
+                    <br>usehttps="on"
+                    <br>bulkmode="on"
+                    <br>queue.dequeuebatchsize="100" # how many messages to send at once
+                   `;
+            completed = true;
+            if (ssh) {
+                chmod = true;
+            } else if (chmod) {
+                output = "logs already deleted!"
             } else {
-                output = "You can't go that way.";
+                output = 'logs not found'
             }
+
             break;
 
         default:
@@ -133,3 +186,22 @@ function handleCommand(command) {
 
 // Initial description
 outputEl.innerHTML += `<div class="prompt">იმისთვის რომ მოიპოვოთ წვდომა კარებებზე ამისთვის უნდა გატეხოთ სისტემა.</div><div></div><div>${rooms[currentRoom].description}</div>`;
+
+function hacked() {
+    if (completed) {
+        setTimeout(() => {
+            terminal.style.display = 'none'
+            document.getElementById('completed').classList.remove('completedandDone')
+            setTimeout(() => {
+                document.getElementById('main').classList.add('mainNone')
+                admin = false;
+                porthack = false;
+                ssh = false;
+                chmod = false;
+            }, 3000);
+        }, 2000);
+    }
+    requestAnimationFrame(hacked)
+}
+
+hacked();

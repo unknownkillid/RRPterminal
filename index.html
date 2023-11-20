@@ -1,23 +1,64 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>hackingTerminal</title>
 </head>
+
 <body>
-    <div id="terminal">
-        <nav class="hackNavbar">
-            <button class="x-btn" id="xBtn">X</button>
-        </nav>
-        <div class="skullBG"></div>
-        <div id="output"></div>
-        <div id="input-line">
-            <span class="prompt">$></span>
-            <input type="text" id="input" autofocus>
+    <div class="mainContainer" id="main">
+        <div class="completed completedandDone" id="completed">
+            <div class="completed-container">
+                <img src="assets/giphy.gif" alt="termialHacked">
+                <h1>Treminal Succesfully Hacked!</h1>
+            </div>
+            <canvas class="canv" id="canv" width="500" height="200" style="z-index: 200;"></canvas>
+        </div>
+        <div id="terminal" class="terminal-main-container">
+
+            <div class="terminal-container" id="terminalLoadingNone">
+                <div class="terminal">
+                    <pre id="terminaloutput"></pre>
+                </div>
+            </div>
+            <nav class="hackNavbar">
+                <button class="x-btn" id="xBtn">X</button>
+            </nav>
+            <div class="area"></div>
+            <div class="skullBG"></div>
+            <div id="output">
+                <textarea name="hackerAciil" id="textarea" cols="100" rows="20"
+                    style="color: green; background: none; border: none; outline: none; user-select: none; -webkit-user-select: none; -moz-user-select: none; resize: none;"
+                    disabled>
+                ⠀⠀⠀⠀⠀⠀⠀⠀⠀     ⢀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+                ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡰⠚     `⠑⢦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+                ⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠞⠀⠀⠀⠀⠀⠀⠀ ⠀⠱⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀
+                ⠀⠀⠀⠀⠀⠀⠀⠀⢀⠏⠀⠀⠀⠀⠀⠀⠀⠀ ⠀⠀⠹⡀⠀⠀⠀⠀⠀⠀⠀⠀
+                ⠀⠀⠀⠀⠀⠀⠀⠀⡜⠀⠀⠀⠀⠀⣀⣀⠀⠀⠀ ⠀⠀⢣⠀⠀⠀⠀⠀⠀⠀⠀
+                ⠀⠀⠀⠀⠀⠀⠀⠀⡇⠀⣠⠔⠋⠉⣩⣍⠉⠙⠢⣄⠀⢸⠀⠀⠀⠀⠀⠀⠀⠀
+                ⠀⠀⠀⠀⠀⠀⠀⠀⢧⡜⢏⠓⠒⠚⠁⠈⠑⠒⠚⣹⢳⡸⠀⠀⠀⠀⠀⠀⠀⠀
+                ⠀⠀⠀⠀⠀⠀⠀⠀⠘⣆⠸⡄⠀⠀⠀⠀⠀⠀⢠⠇⣰⠃⠀⠀⠀⠀⠀⠀⠀⠀
+                ⠀⠀⠀⠀⠀⠀⢀⡴⠚⠉⢣⡙⢦⡀⠀⠀⢀⡰⢋⡜⠉⠓⠦⣀⠀⠀⠀⠀⠀⠀
+                ⠀⠀⠀⠀⠀⡴⠁⢀⣀⣀⣀⣙⣦⣉⣉⣋⣉⣴⣋⣀⣀⣀⡀⠈⢧⠀⠀⠀⠀⠀
+                ⠀⠀⠀⠀⡸⠁⠀⢸⠀⠀⠀⠀⢀⣔⡛⠛⡲⡀⠀⠀⠀⠀ ⡇⠀ ⠈⢇⠀⠀⠀⠀
+                ⠀⠀⠀⢠⠇⠀⠀⠸⡀⠀⠀⠀⠸⣼⠽⠯⢧⠇⠀⠀ ⠀⠀⡇⠀ ⠀⠘⡆⠀⠀⠀
+                ⠀⠀⠀⣸⠀⠀⠀⠀⡇⠀⠀⠀⠳⢼⡦⢴⡯⠞⠀⠀⠀  ⢰⠀ ⠀⠀⠀⢧⠀⠀⠀
+                ⠀⠀⠀⢻⠀⠀⠀⠀⡇⠀⠀⠀⢀⡤⠚⠛⢦⣀⠀⠀  ⠀⢸⠀⠀ ⠀⠀⡼⠀⠀⠀
+                ⠀⠀⠀⠈⠳⠤⠤⣖⣓⣒⣒⣒⣓⣒⣒⣒⣒⣚⣒⣒⣒⣚⣲⠤⠤⠖⠁⠀
+            </textarea>
+            </div>
+            <div id="input-line">
+                <span class="prompt">$></span>
+                <input type="text" id="input" autofocus>
+            </div>
         </div>
     </div>
 
     <script src="index.js"></script>
+    <script src="loadingterminal.js"></script>
+    <script src="matrix.js"></script>
 </body>
+
 </html>
