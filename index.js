@@ -3,6 +3,16 @@ const outputEl = document.getElementById('output');
 const terminal = document.getElementById('terminal');
 const xBtn = document.getElementById('xBtn')
 
+const entersound = new Audio()
+entersound.src = './assets/sounds/enter.wav'
+entersound.volume = 0.5
+
+
+
+function enterSounds() {
+    entersound.play();
+}
+
 xBtn.addEventListener('click', () => {
     terminal.style.display = 'none'
     admin = false;
@@ -35,10 +45,10 @@ let progressBar = "-------------------------- Completed ------------------------
 
 const rooms = {
     start: {
-        description: `commands: <br>"help" <br><br>"sudo su - სისტემის ადმინისტრატორი"
-        <br> "porthack -w file/wordlist.txt - პორტების დაჰაკვა"
-        <br> "ssh22 config.py ssh პროტოკილოს მოხსნა"
-        <br> "chmod 777 deletelog.py ლოგების წაშლა"`,
+        description: `commands: <br>"help" <br><br>"sudo su" - სისტემის ადმინისტრატორი"
+        <br> "porthack -w file/wordlist.txt" - პორტების დაჰაკვა"
+        <br> "ssh22 config.py" ssh პროტოკილოს მოხსნა"
+        <br> "chmod 777 deletelog.py" ლოგების წაშლა"`,
         exits: { north: 'help' },
     },
 };
@@ -54,9 +64,12 @@ function handleCommand(command) {
         case 'sudo su':
             output = `Now you are root let's start what you wanna do.`;
             admin = true;
+            enterSounds()
             break;
 
         case 'porthack -w file/wordlist.txt':
+
+            enterSounds()
 
             output = `<br> eth0  Link encap:Ethernet  HWaddr 00:0B:CD:1C:18:5A
             inet addr:172.16.25.126  Bcast:172.16.25.63  Mask:255.255.255.224
@@ -96,6 +109,8 @@ function handleCommand(command) {
             break;
 
         case 'ssh22 config.py':
+
+            enterSounds()
             output = `ssh.service - OpenBSD Secure Shell server
             <br>Loaded: loaded (/lib/systemd/system/ssh.service; enabled; vendor preset: enabled)
             <br>Active: active (running) since Thu 2020-05-14 15:08:23 CEST; 24h ago
@@ -124,6 +139,8 @@ function handleCommand(command) {
             break;
 
         case 'chmod 777 deletelog.py':
+
+            enterSounds()
 
             output = `<br>Sep 11 09:46:33 sys1 crontab[20601]: (root) BEGIN EDIT (root)
                 <br>Sep 11 09:46:39 sys1 crontab[20601]: (root) REPLACE (root)
@@ -167,6 +184,8 @@ function handleCommand(command) {
                     <br>queue.dequeuebatchsize="100" # how many messages to send at once
                    `;
             completed = true;
+            const loadingplay = new Audio('./assets/sounds/completed.wav')
+            loadingplay.play();
             if (ssh) {
                 chmod = true;
             } else if (chmod) {

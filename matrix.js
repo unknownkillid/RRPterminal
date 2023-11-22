@@ -8,6 +8,7 @@ function setCanvasSize() {
 
 setCanvasSize();
 
+
 const cols = Math.floor(canvas.width / 20) + 1;
 const ypos = Array(cols).fill(0);
 
